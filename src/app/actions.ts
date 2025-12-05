@@ -6,9 +6,9 @@ export async function generateArtAction() {
   try {
     // These colors are from the UI style guide
     const result = await generateBackgroundArt({
-      primaryColor: '#93c5fd', // blue-300
-      backgroundColor: '#dbeafe', // blue-100
-      accentColor: '#bfdbfe', // blue-200
+      primaryColor: '#F2B8C3', // A soft pink
+      backgroundColor: '#F9E7EA', // A very light pink
+      accentColor: '#F2E3B8', // A light yellow
     });
     return { artDataUri: result.artDataUri };
   } catch (error) {
