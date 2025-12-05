@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "profile-picture",
+      "description": "A portrait of an artist",
+      "imageUrl": "https://images.unsplash.com/photo-1529943684416-9d29047b809e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMGFydGlzdHxlbnwwfHx8fDE3NjQ5MDA1MTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait artist"
+    },
+    {
+      "id": "project-art-1",
+      "description": "An abstract oil painting",
+      "imageUrl": "https://images.unsplash.com/photo-1531489956451-20957fab52f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMHBhaW50aW5nfGVufDB8fHx8MTc2NDc5MTY4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract painting"
+    },
+    {
+      "id": "project-art-2",
+      "description": "A vibrant digital illustration",
+      "imageUrl": "https://images.unsplash.com/photo-1644331064965-bce2645dd1e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxkaWdpdGFsJTIwaWxsdXN0cmF0aW9ufGVufDB8fHx8MTc2NDgyODI1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "digital illustration"
+    },
+    {
+      "id": "project-music-1",
+      "description": "Cover art for a music album",
+      "imageUrl": "https://images.unsplash.com/photo-1516900448138-898720b936c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhbGJ1bSUyMGNvdmVyfGVufDB8fHx8MTc2NDkwMDUxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "album cover"
+    },
+    {
+      "id": "project-music-2",
+      "description": "Sheet music for an orchestral piece",
+      "imageUrl": "https://images.unsplash.com/photo-1626539896924-b328af4ef01d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzaGVldCUyMG11c2ljfGVufDB8fHx8MTc2NDg2Mjg2M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sheet music"
+    },
+    {
+      "id": "project-lit-1",
+      "description": "Cover of a book of short stories",
+      "imageUrl": "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxib29rJTIwY292ZXJ8ZW58MHx8fHwxNzY0ODc2NzIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book cover"
+    },
+    {
+      "id": "project-lit-2",
+      "description": "An open book of poetry",
+      "imageUrl": "https://images.unsplash.com/photo-1502979932800-33d311b7ce56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxvcGVuJTIwYm9va3xlbnwwfHx8fDE3NjQ4ODU0MzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open book"
+    }
+  ]
 }
