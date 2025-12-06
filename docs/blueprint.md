@@ -1,4 +1,4 @@
-# **App Name**: Sasa Art
+# **App Name**: Lunea Arte
 
 ## Core Features:
 
