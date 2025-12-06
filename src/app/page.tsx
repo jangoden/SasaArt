@@ -27,7 +27,7 @@ export default function Home() {
 
       <footer className="w-full p-6 text-center">
         <Button asChild className="bg-primary/80 hover:bg-primary text-primary-foreground">
-          <a href="mailto:sasa@example.com">
+          <a href="mailto:artelunea@gmail.com">
             <Mail className="mr-2 h-4 w-4" /> Contact Me
           </a>
         </Button>
