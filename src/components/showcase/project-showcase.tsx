@@ -3,7 +3,13 @@
 import { Project } from "@/lib/data-service";
 import { ProjectCard } from "./project-card";
 
-export function ProjectGrid({ projects }: { projects: Project[] }) {
+export function ProjectGrid({
+  projects,
+  category,
+}: {
+  projects: Project[];
+  category?: string;
+}) {
   if (!projects || projects.length === 0) {
     return (
       <div className="text-center py-12">
@@ -16,7 +22,7 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((p) => (
-        <ProjectCard key={p.id} {...p} />
+        <ProjectCard key={p.id} {...p} category={category} />
       ))}
     </div>
   );

@@ -7,6 +7,7 @@ import { createClient } from './supabase/server';
 export type Project = {
   id: string;
   title: string;
+  slug: string;
   imageUrl?: string;
   soundcloudUrl?: string;
   content?: string;
@@ -33,10 +34,27 @@ function transformProject(dbProject: any): Project {
   return {
     id: dbProject.id,
     title: dbProject.title,
+    slug: dbProject.slug,
     imageUrl: getFullImageUrl(dbProject.image_url),
     soundcloudUrl: dbProject.music_url || undefined,
     content: dbProject.content || undefined,
   };
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (error || !data) {
+    console.error(`Error fetching project with slug '${slug}':`, error);
+    return null;
+  }
+
+  return transformProject(data);
 }
 
 async function getProjectsByCategorySlug(slug: string): Promise<Project[]> {

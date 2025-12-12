@@ -9,7 +9,7 @@ export default async function LiteraturePage() {
       title="Literature"
       subtitle="Written words, poems, and stories."
     >
-      <ProjectGrid projects={literatureProjects} />
+      <ProjectGrid projects={literatureProjects} category="literature" />
     </PageLayout>
   );
 }

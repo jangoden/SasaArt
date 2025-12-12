@@ -21,9 +21,15 @@ export default async function EditCategoryPage({ params }: PageProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Edit Category</h1>
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+          Edit Category
+        </h1>
+        <p className="text-gray-400 mt-1">Update category details below.</p>
+      </div>
       <CategoryForm category={category} />
     </div>
   );
 }
+
