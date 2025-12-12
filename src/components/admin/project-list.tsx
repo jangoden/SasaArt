@@ -69,7 +69,7 @@ export function ProjectList({ initialProjects }: { initialProjects: Project[] })
                 <TableCell>{new Date(project.created_at).toLocaleDateString()}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/${project.id}/edit`}>Edit</Link>
+                    <Link href={`/admin/projects/${project.id}/edit`}>Edit</Link>
                   </Button>
                   <Button
                     variant="destructive"

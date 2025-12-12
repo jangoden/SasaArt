@@ -1,45 +1,29 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 import { CategoryForm } from '@/components/admin/category-form';
+import { notFound } from 'next/navigation';
 
-export default function EditCategoryPage({ params }: { params: { id: string } }) {
-  const [category, setCategory] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('id', params.id)
-        .single();
+export default async function EditCategoryPage({ params }: PageProps) {
+  const { id } = await params;
+  const supabase = await createClient();
 
-      if (error) {
-        setError(error.message);
-      } else {
-        setCategory(data);
-      }
-      setLoading(false);
-    };
+  const { data: category, error } = await supabase
+    .from('categories')
+    .select('id, name, slug')
+    .eq('id', id)
+    .single();
 
-    fetchCategory();
-  }, [params.id, supabase]);
-
-  if (loading) {
-    return <p>Loading category...</p>;
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
+  if (error || !category) {
+    notFound();
   }
 
   return (
-    <div>
-      {category && <CategoryForm category={category} />}
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Edit Category</h1>
+      <CategoryForm category={category} />
     </div>
   );
 }

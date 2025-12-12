@@ -1,15 +1,15 @@
 import { PageLayout } from "@/components/layout/page-layout";
-import { SubCategoryShowcase } from "@/components/showcase/project-showcase";
+import { ProjectGrid } from "@/components/showcase/project-showcase";
 import { getArtProjects } from "@/lib/data-service";
 
 export default async function ArtPage() {
-  const artProjectsBySubcategory = await getArtProjects();
+  const artProjects = await getArtProjects();
   return (
     <PageLayout
       title="Art"
-      subtitle="A collection of visual works."
+      subtitle="A collection of visual works exploring texture, color, and emotion."
     >
-      <SubCategoryShowcase data={artProjectsBySubcategory} />
+      <ProjectGrid projects={artProjects} />
     </PageLayout>
   );
 }

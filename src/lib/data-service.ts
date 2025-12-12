@@ -3,126 +3,100 @@
  * It uses the server-side Supabase client to interact with the database.
  */
 import { createClient } from './supabase/server';
-import { projectsData } from './projects-data'; // Keep for featured projects for now
-import { Project } from './projects-data';
 
-// Helper function to group projects by a specific key (e.g., category or subcategory name)
-function groupBy(array: any[], key: string) {
-  return array.reduce((result, currentValue) => {
-    (result[currentValue[key]] = result[currentValue[key]] || []).push(
-      currentValue
-    );
-    return result;
-  }, {});
-}
+export type Project = {
+  id: string;
+  title: string;
+  imageUrl?: string;
+  soundcloudUrl?: string;
+  content?: string;
+};
 
-export async function getArtProjects() {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('projects')
-    .select(
-      `
-      *,
-      subcategories ( name ),
-      categories ( name )
-    `
-    )
-    .eq('categories.slug', 'art');
-  
-  if (error) {
-    console.error('Error fetching art projects:', error);
-    return {};
+// Supabase Storage base URL
+const SUPABASE_STORAGE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/project_images`;
+
+// Helper to get full image URL from potentially partial path
+function getFullImageUrl(imageUrl: string | null | undefined): string | undefined {
+  if (!imageUrl) return undefined;
+
+  // If already a full URL, return as-is
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
   }
 
-  // The component for the Art page expects data grouped by subcategory
-  // e.g., { "Canvas": [...], "Bag": [...] }
-  return groupBy(data.filter(p => p.subcategories), 'subcategories.name');
+  // If it's just a filename, construct the full Supabase Storage URL
+  return `${SUPABASE_STORAGE_URL}/${imageUrl}`;
 }
 
-export async function getArchitectureProjects() {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('projects')
-      .select(
-        `
-        *,
-        subcategories ( name ),
-        categories ( name )
-      `
-      )
-      .eq('categories.slug', 'architecture');
-    
-    if (error) {
-      console.error('Error fetching architecture projects:', error);
-      return [];
-    }
-    return data || [];
+// Helper to transform Supabase project to Project type
+function transformProject(dbProject: any): Project {
+  return {
+    id: dbProject.id,
+    title: dbProject.title,
+    imageUrl: getFullImageUrl(dbProject.image_url),
+    soundcloudUrl: dbProject.music_url || undefined,
+    content: dbProject.content || undefined,
+  };
 }
 
-export async function getMusicProjects() {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('projects')
-      .select(
-        `
-        *,
-        subcategories ( name ),
-        categories ( name )
-      `
-      )
-      .eq('categories.slug', 'music');
-    
-    if (error) {
-      console.error('Error fetching music projects:', error);
-      return {};
-    }
-  
-    // The component for the Music page expects data grouped by subcategory
-    return groupBy(data.filter(p => p.subcategories), 'subcategories.name');
+async function getProjectsByCategorySlug(slug: string): Promise<Project[]> {
+  const supabase = await createClient();
+
+  // First get the category ID
+  const { data: category, error: catError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', slug)
+    .single();
+
+  if (catError || !category) {
+    console.error(`Error fetching category '${slug}':`, catError);
+    return [];
+  }
+
+  // Then fetch projects for that category
+  const { data: projects, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('category_id', category.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(`Error fetching projects for '${slug}':`, error);
+    return [];
+  }
+
+  return (projects || []).map(transformProject);
 }
 
-export async function getLiteratureProjects() {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('projects')
-      .select(
-        `
-        *,
-        subcategories ( name ),
-        categories ( name )
-      `
-      )
-      .eq('categories.slug', 'literature');
-    
-    if (error) {
-      console.error('Error fetching literature projects:', error);
-      return {};
-    }
-
-    // The component for the Literature page expects data grouped by subcategory
-    // e.g. { "Poetry": [...], "Prose": [...] }
-    const groupedBySubCat = groupBy(data.filter(p => p.subcategories), 'subcategories.name');
-
-    // The component expects Prose to contain multiple sub-types, so we manually group them
-    // This logic might need to be adjusted based on how subcategories are defined in the DB
-    const proseProjects = [...(groupedBySubCat['Life Story'] || []), ...(groupedBySubCat['Fictitious'] || [])];
-    
-    return {
-        'Poetry': groupedBySubCat['Poetry'] || [],
-        'Prose': proseProjects,
-    };
+export async function getArtProjects(): Promise<Project[]> {
+  return getProjectsByCategorySlug('art');
 }
 
-// For now, featured projects still come from the local file.
-// A proper implementation would involve a 'featured' flag in the 'projects' table.
-export function getFeaturedProjects(): Project[] {
-    return [
-        { title: 'Abstrak', imageUrl: '/images/art/Fine%20Art/Canvas/Abstrak.webp' },
-        { 
-            title: 'Lekas Pulih', 
-            soundcloudUrl: 'https://soundcloud.com/lunea-arte/lekas-pulih-lunea-arte?si=cf620af30dee4d43a3e52ec66786b22d&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing' 
-        },
-        { title: 'Whispers of Dawn', imageId: 'project-lit-1' },
-        { title: 'Modern Villa', imageId: 'project-arch-1' },
-    ];
+export async function getArchitectureProjects(): Promise<Project[]> {
+  return getProjectsByCategorySlug('architecture');
+}
+
+export async function getMusicProjects(): Promise<Project[]> {
+  return getProjectsByCategorySlug('music');
+}
+
+export async function getLiteratureProjects(): Promise<Project[]> {
+  return getProjectsByCategorySlug('literature');
+}
+
+// For featured projects on the home page
+export async function getFeaturedProjects(): Promise<Project[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(4);
+
+  if (error) {
+    console.error('Error fetching featured projects:', error);
+    return [];
+  }
+  return (data || []).map(transformProject);
 }

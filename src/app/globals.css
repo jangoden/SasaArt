@@ -41,9 +41,27 @@ body {
     --sidebar-accent-foreground: 340 60% 30%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Admin CMS Colors - Light */
+    --admin-bg: 210 40% 96.1%;
+    --admin-fg: 222.2 84% 4.9%;
+    --admin-sidebar-bg: 222.2 47.4% 11.2%;
+    --admin-sidebar-fg: 210 40% 98%;
+    --admin-primary: 262.1 83.3% 57.8%; /* Violet 600 */
+    --admin-primary-fg: 210 40% 98%;
   }
   .dark {
     --background: 340 30% 10%;
+    /* ... existing dark vars ... */
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Admin CMS Colors - Dark */
+    --admin-bg: 222.2 47.4% 11.2%; /* Slate 950 */
+    --admin-fg: 210 40% 98%;
+    --admin-sidebar-bg: 222.2 84% 4.9%; /* Slate 900 */
+    --admin-sidebar-fg: 210 40% 98%;
+    --admin-primary: 263.4 70% 50.4%; /* Violet 700 */
+    --admin-primary-fg: 210 40% 98%;
     --foreground: 0 0% 98%;
     --card: 340 30% 10%;
     --card-foreground: 0 0% 98%;

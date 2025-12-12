@@ -1,45 +1,29 @@
-"use client"; // This page needs to be a client component to fetch data on the client side
-
-import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 import { ProjectForm } from '@/components/admin/project-form';
+import { notFound } from 'next/navigation';
 
-export default function EditProjectPage({ params }: { params: { id: string } }) {
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('id', params.id)
-        .single();
+export default async function EditProjectPage({ params }: PageProps) {
+  const { id } = await params;
+  const supabase = await createClient();
 
-      if (error) {
-        setError(error.message);
-      } else {
-        setProject(data);
-      }
-      setLoading(false);
-    };
+  const { data: project, error } = await supabase
+    .from('projects')
+    .select('id, title, content, soundcloud_url, image_url, category_id, subcategory_id')
+    .eq('id', id)
+    .single();
 
-    fetchProject();
-  }, [params.id, supabase]);
-
-  if (loading) {
-    return <p>Loading project...</p>;
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
+  if (error || !project) {
+    notFound();
   }
 
   return (
-    <div>
-      {project && <ProjectForm project={project} />}
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Edit Project</h1>
+      <ProjectForm project={project} />
     </div>
   );
 }
