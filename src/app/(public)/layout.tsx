@@ -7,7 +7,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-[url('/images/background.png')] bg-cover bg-fixed bg-center text-white">
+    <div className="bg-[url('/images/background.webp')] bg-cover bg-fixed bg-center text-white">
         <div className="relative flex h-screen overflow-hidden">
           {/* Always-visible sidebar for large screens */}
           <div className="hidden lg:block fixed top-0 left-0 z-40 h-full">
