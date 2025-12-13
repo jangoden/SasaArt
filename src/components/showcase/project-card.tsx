@@ -5,10 +5,24 @@ import Link from "next/link";
 import { Project } from "@/lib/data-service";
 import { SoundcloudEmbed } from "../soundcloud-embed";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type ProjectCardProps = Project & {
   category?: string;
 };
+
+// Helper to clean HTML tags for preview
+function stripHtml(html: string | undefined): string {
+  if (!html) return "";
+  return html.replace(/<[^>]*>?/gm, "");
+}
 
 export function ProjectCard({
   title,
@@ -22,16 +36,18 @@ export function ProjectCard({
   const hasImage = !!imageUrl;
   const hasMusic = !!soundcloudUrl;
   const hasText = !!content;
+  // Heuristic: If it has text but no image/music, treat as literature even if category is missing (e.g. on homepage)
+  const isLiterature = category === "literature" || (hasText && !hasImage && !hasMusic);
 
-  // Literature items should link to their detail page
-  const isLink = category === 'literature' && slug;
+  // Literature items use a Dialog, others might link
+  const isLink = !isLiterature && slug && (category === 'art' || category === 'architecture' || category === 'music'); // Adjust based on requirements
 
   const CardContent = (
     <div className={cn(
       "group relative rounded-2xl overflow-hidden transition-all duration-500 ease-out h-full",
-      "bg-gradient-to-br from-balack/10 to-black/5 backdrop-blur-xl border border-white/20",
+      "bg-gradient-to-br from-black/10 to-black/5 backdrop-blur-xl border border-white/20",
       "hover:border-white/40 hover:shadow-2xl hover:shadow-purple-500/20",
-      isLink && "hover:-translate-y-1"
+      (isLink || isLiterature) && "cursor-pointer hover:-translate-y-1"
     )}>
       {/* Image Display (For Art, Architecture) */}
       {hasImage && (
@@ -86,7 +102,7 @@ export function ProjectCard({
 
           {/* Excerpt */}
           <p className="text-white/60 text-sm leading-relaxed line-clamp-3 flex-grow mb-4">
-            {content}
+            {isLiterature ? stripHtml(content) : content}
           </p>
 
           {/* Footer */}
@@ -114,6 +130,28 @@ export function ProjectCard({
       )}
     </div>
   );
+
+  // If literature, wrap in Dialog
+  if (isLiterature) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          {CardContent}
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-3xl bg-black/90 backdrop-blur-xl border border-white/10 text-white max-h-[90vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-headline font-bold">{title}</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="flex-grow pr-4">
+            <div
+              className="prose prose-invert prose-lg max-w-none mt-4"
+              dangerouslySetInnerHTML={{ __html: content || "" }}
+            />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (isLink) {
     return (

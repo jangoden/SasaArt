@@ -8,9 +8,16 @@ export function ViewCounter({ projectId }: { projectId: string }) {
     const supabase = createClient();
     
     const incrementView = async () => {
-      await supabase.rpc('increment_project_views', {
-        project_id_to_update: projectId,
-      });
+      try {
+        const { error } = await supabase.rpc('increment_project_views', {
+          project_id_to_update: projectId,
+        });
+        if (error) {
+          console.error('Error incrementing view count:', error);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred while incrementing view count:', error);
+      }
     };
 
     if (projectId) {
