@@ -1,4 +1,4 @@
-import { getProjectBySlug, getLiteratureProjects } from "@/lib/data-service";
+import { getProjectBySlug, getLiteratureProjectSlugs } from "@/lib/data-service";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, BookOpen, Share2, Heart } from "lucide-react";
@@ -9,10 +9,8 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const projects = await getLiteratureProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  const projects = await getLiteratureProjectSlugs();
+  return projects;
 }
 
 export default async function LiteratureDetailPage({ params }: PageProps) {
@@ -22,9 +20,6 @@ export default async function LiteratureDetailPage({ params }: PageProps) {
   if (!project) {
     notFound();
   }
-
-  // Format content into paragraphs
-  const paragraphs = project.content?.split('\n\n').filter(Boolean) || [];
 
   return (
     <article className="min-h-screen animate-in fade-in duration-500">
@@ -74,18 +69,8 @@ export default async function LiteratureDetailPage({ params }: PageProps) {
       <div className="max-w-3xl">
         <div className="p-6 md:p-10 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10">
           <div className="prose prose-lg prose-invert max-w-none">
-            {paragraphs.length > 0 ? (
-              paragraphs.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className={`text-white/80 text-lg leading-relaxed mb-6 ${index === 0 ? 'first-letter:text-5xl first-letter:font-headline first-letter:font-bold first-letter:text-purple-300 first-letter:float-left first-letter:mr-3 first-letter:mt-1' : ''}`}
-                >
-                  {paragraph}
-                </p>
-              ))
-            ) : project.content ? (
+            {project.content ? (
               <div
-                className="text-white/80 text-lg leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: project.content }}
               />
             ) : (

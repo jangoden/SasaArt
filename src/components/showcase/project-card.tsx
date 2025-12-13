@@ -29,7 +29,7 @@ export function ProjectCard({
   const CardContent = (
     <div className={cn(
       "group relative rounded-2xl overflow-hidden transition-all duration-500 ease-out h-full",
-      "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20",
+      "bg-gradient-to-br from-balack/10 to-black/5 backdrop-blur-xl border border-white/20",
       "hover:border-white/40 hover:shadow-2xl hover:shadow-purple-500/20",
       isLink && "hover:-translate-y-1"
     )}>

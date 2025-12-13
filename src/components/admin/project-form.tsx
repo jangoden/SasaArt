@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { TiptapEditor } from "@/components/admin/tiptap-editor";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -311,11 +311,16 @@ export function ProjectForm({ project }: ProjectFormProps) {
                 {isLiterature && (
                   <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                     <Label htmlFor="content" className="text-white">Content / Blog Post</Label>
-                    <Textarea
-                      id="content"
-                      {...register("content")}
-                      className="bg-slate-900 border-slate-700 text-white min-h-[300px]"
-                      placeholder="Write your story here..."
+                    <Controller
+                      name="content"
+                      control={control}
+                      render={({ field }) => (
+                        <TiptapEditor
+                          value={field.value || ""}
+                          onChange={field.onChange}
+                          placeholder="Write your story here..."
+                        />
+                      )}
                     />
                   </div>
                 )}

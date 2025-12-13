@@ -1,5 +1,5 @@
 import { PageLayout } from "@/components/layout/page-layout";
-import { ProjectGrid } from "@/components/showcase/project-showcase";
+import { LiteratureGrid } from "@/components/showcase/literature-grid";
 import { getLiteratureProjects } from "@/lib/data-service";
 
 export default async function LiteraturePage() {
@@ -9,7 +9,7 @@ export default async function LiteraturePage() {
       title="Literature"
       subtitle="Written words, poems, and stories."
     >
-      <ProjectGrid projects={literatureProjects} category="literature" />
+      <LiteratureGrid projects={literatureProjects} />
     </PageLayout>
   );
 }

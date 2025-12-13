@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Instagram, Mail, Linkedin, Music } from 'lucide-react'; // Added Instagram, Mail, Music
+import { Instagram, Mail, Linkedin, Music, Youtube } from 'lucide-react';
 
 export function SocialLinks() {
   const socialLinks = [
@@ -20,8 +20,13 @@ export function SocialLinks() {
     },
     {
       name: 'SoundCloud',
-      icon: Music, // Using Music icon as a placeholder for SoundCloud
+      icon: Music,
       url: 'https://on.soundcloud.com/2i1SvqUroyYQh9kOVN',
+    },
+    {
+      name: 'Youtube',
+      icon: Youtube,
+      url: 'https://www.youtube.com/@luneaarte',
     },
   ];
 

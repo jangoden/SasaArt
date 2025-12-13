@@ -20,7 +20,7 @@ export function MobileHeader() {
                 />
                 <AvatarFallback>SA</AvatarFallback>
             </Avatar>
-            <span className="text-xl font-bold font-headline text-pink-400">
+            <span className="text-xl font-bold font-headline text-black-300">
                 Lunea Arte
             </span>
         </Link>
