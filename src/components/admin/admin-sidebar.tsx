@@ -35,7 +35,7 @@ export function AdminSidebar() {
       <div className={cn("flex items-center h-16 px-4 border-b border-white/10", collapsed ? "justify-center" : "justify-between")}>
         {!collapsed && (
           <Link href="/admin" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-            SasaArt CMS
+            Lunea Arte
           </Link>
         )}
       </div>
@@ -124,7 +124,7 @@ export function MobileSidebar() {
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b border-white/10">
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-              SasaArt CMS
+              Lunea Arte
             </span>
           </div>
           <nav className="flex-1 py-4 px-4 space-y-2">

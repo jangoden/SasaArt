@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getFeaturedProjects } from "@/lib/data-service";
 import { ProjectGrid } from "@/components/showcase/project-showcase";
 
+export const revalidate = 0;
+
 export default async function Home() {
     const featuredProjects = await getFeaturedProjects();
 
@@ -53,9 +55,6 @@ export default async function Home() {
                         <h2 className="text-2xl md:text-3xl font-headline text-white font-bold">
                             Recent Works
                         </h2>
-                        <Link href="/art" className="text-purple-300 hover:text-purple-200 flex items-center gap-1 text-sm font-medium transition-colors">
-                            View all <ArrowRight className="h-4 w-4" />
-                        </Link>
                     </div>
                     <div className="p-4 md:p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg">
                         <ProjectGrid projects={featuredProjects} />

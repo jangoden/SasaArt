@@ -2,6 +2,8 @@ import { PageLayout } from "@/components/layout/page-layout";
 import { ProjectGrid } from "@/components/showcase/project-showcase";
 import { getArchitectureProjects } from "@/lib/data-service";
 
+export const revalidate = 0;
+
 export default async function ArchitecturePage() {
   const architectureProjects = await getArchitectureProjects();
 

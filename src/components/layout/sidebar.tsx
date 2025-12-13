@@ -15,7 +15,11 @@ const navItems = [
   { href: "/architecture", label: "Architecture", icon: Building2 },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onLinkClick?: () => void;
+}
+
+export function Sidebar({ onLinkClick }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -37,6 +41,7 @@ export function Sidebar() {
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={onLinkClick}
                 className={cn(
                   "flex items-center gap-4 px-4 py-3 rounded-xl text-white/80 transition-all duration-300",
                   isActive

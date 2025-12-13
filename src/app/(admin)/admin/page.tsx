@@ -4,8 +4,19 @@ import { DashboardStat } from '@/components/admin/dashboard-stat';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 export const revalidate = 0;
+
+function formatNumber(num: number): string {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
+}
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
@@ -18,6 +29,12 @@ export default async function AdminDashboard() {
   const { count: categoryCount } = await supabase
     .from('categories')
     .select('*', { count: 'exact', head: true });
+
+  const { data: viewsData, error: viewsError } = await supabase
+    .from('projects')
+    .select('views');
+
+  const totalViews = viewsData?.reduce((acc, project) => acc + (project.views || 0), 0) || 0;
 
   // Fetch recent projects
   const { data: recentProjects } = await supabase
@@ -58,16 +75,16 @@ export default async function AdminDashboard() {
         />
         <DashboardStat
           title="Total Views"
-          value="12.4K"
+          value={formatNumber(totalViews)}
           icon="Users"
-          description="Estimated total engagement"
+          description="Live project engagement"
           colorClassName="from-emerald-500 to-teal-400"
         />
       </div>
 
       <div className="grid gap-4 md:grid-cols-7">
         {/* Recent Activity / Projects */}
-        <Card className="md:col-span-4 bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+        <Card className="md:col-span-full bg-slate-800/50 border-slate-700 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-xl text-white">Recent Projects</CardTitle>
           </CardHeader>
@@ -81,7 +98,7 @@ export default async function AdminDashboard() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-white">{project.title}</p>
-                      <p className="text-xs text-gray-500">{new Date(project.created_at).toLocaleDateString()}</p>
+                      <p className="text-xs text-gray-500">{format(new Date(project.created_at), 'PP')}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -99,41 +116,7 @@ export default async function AdminDashboard() {
           </CardContent>
         </Card>
 
-        {/* Quick Actions or Analytics Placeholder */}
-        <Card className="md:col-span-3 bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-xl text-white">Quick Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Storage Usage</span>
-                  <span className="text-white font-medium">45%</span>
-                </div>
-                <div className="h-2 rounded-full bg-slate-700 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 w-[45%]" />
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">API Requests</span>
-                  <span className="text-white font-medium">1.2k / 10k</span>
-                </div>
-                <div className="h-2 rounded-full bg-slate-700 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-violet-500 to-purple-500 w-[12%]" />
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Button variant="outline" className="w-full border-slate-700 text-gray-300 hover:bg-slate-700 hover:text-white">
-                  <Activity className="mr-2 h-4 w-4" /> View System Status
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
